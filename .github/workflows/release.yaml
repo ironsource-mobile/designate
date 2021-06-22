@@ -1,0 +1,26 @@
+name: Release
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  build:
+    runs-on: [self-hosted, x64, linux, eks, us, general, prod]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build Docker image
+        run: |
+          docker build . -t ${{ steps.login-ecr.outputs.registry }}/designate:${GITHUB_REF#refs/tags/} \
+            -t ${{ steps.login-ecr.outputs.registry }}/designate:latest
+      - name: Push Docker image
+        run: |
+          docker push ${{ steps.login-ecr.outputs.registry }}/designate:${GITHUB_REF#refs/tags/}
+          docker push ${{ steps.login-ecr.outputs.registry }}/designate:latest

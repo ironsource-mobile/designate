@@ -1,2 +1,3 @@
-# kubernetes-deploy-action
-A GitHub Action which retrieves service metadata from Service Registry, renders Helm values and triggers Spinnaker pipeline
+# Designate
+
+**Designate** is a GitHub Action, intended for fetching application metadata from service registry, building corresponding Helm values and triggering Spinnaker pipelines.

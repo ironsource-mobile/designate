@@ -1,0 +1,45 @@
+name: "Designate"
+description: "Retrieve service metadata from Service Registry, render Helm values and trigger Spinnaker pipeline"
+inputs:
+  name:
+    description: "Service name"
+    required: true
+  version:
+    description: "Service version (image tag)"
+    required: true
+  environment:
+    description: "Deployment environment"
+    required: true
+  pipeline:
+    description: "Deployment pipeline"
+    required: false
+    default: "rollout"
+  chart:
+    description: "Helm chart name (optional)"
+    required: true
+    default: "mobile-helm-charts/base-app"
+  registry_repo:
+    description: "Registry repo (optional)"
+    required: false
+    default: "ironsource-mobile/service-registry"
+  registry_branch:
+    description: "Registry branch (optional)"
+    required: false
+    default: "main"
+runs:
+  using: "docker"
+  image: "032106861074.dkr.ecr.us-east-1.amazonaws.com/designate:0.0.0"
+  args:
+    - "--name ${{ inputs.name }}"
+    - "--version ${{ inputs.version }}"
+    - "--environment ${{ inputs.environment }}"
+    - "--pipeline ${{ inputs.pipeline }}"
+    - "--chart ${{ inputs.chart }}"
+  env:
+    CHART: "${{ inputs.chart }}"
+    REGISTRY_REPO: "${{ inputs.registry_repo }}"
+    REGISTRY_BRANCH: "${{ inputs.registry_branch }}"
+    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+branding:
+  icon: "upload-cloud"
+  color: "blue"
