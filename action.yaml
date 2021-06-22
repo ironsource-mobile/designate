@@ -33,6 +33,7 @@ runs:
   using: "docker"
   image: "Dockerfile"
   args:
+    - "deploy"
     - "--name"
     - "${{ inputs.name }}"
     - "--version"
