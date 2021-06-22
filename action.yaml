@@ -26,9 +26,12 @@ inputs:
     description: "Registry branch (optional)"
     required: false
     default: "main"
+  github_token:
+    description: "GitHub Token"
+    required: true
 runs:
   using: "docker"
-  image: "032106861074.dkr.ecr.us-east-1.amazonaws.com/designate:v0.1.1"
+  image: "032106861074.dkr.ecr.us-east-1.amazonaws.com/designate:v0.1.2"
   args:
     - "--name ${{ inputs.name }}"
     - "--version ${{ inputs.version }}"
@@ -39,7 +42,7 @@ runs:
     CHART: "${{ inputs.chart }}"
     REGISTRY_REPO: "${{ inputs.registry_repo }}"
     REGISTRY_BRANCH: "${{ inputs.registry_branch }}"
-    GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    GITHUB_TOKEN: "${{ inputs.github_token }}"
 branding:
   icon: "upload-cloud"
   color: "blue"
