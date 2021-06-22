@@ -1,10 +1,10 @@
-FROM python:3.9-slim as builder
+FROM python:3.9-slim
 
 RUN pip install -q poetry
 
 WORKDIR /usr/src/designate
 
 COPY . /usr/src/designate/
-RUN poetry install --no-dev
+RUN poetry build -f wheel && pip install -q dist/designate-*.whl
 
-ENTRYPOINT ["designate"]
+ENTRYPOINT ["/usr/local/bin/designate"]
