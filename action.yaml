@@ -28,7 +28,7 @@ inputs:
     default: "main"
 runs:
   using: "docker"
-  image: "032106861074.dkr.ecr.us-east-1.amazonaws.com/designate:v0.1.0"
+  image: "032106861074.dkr.ecr.us-east-1.amazonaws.com/designate:v0.1.1"
   args:
     - "--name ${{ inputs.name }}"
     - "--version ${{ inputs.version }}"
