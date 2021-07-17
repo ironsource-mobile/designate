@@ -14,8 +14,7 @@ class Pipeline:
     name: str = attr.ib()
 
     def run(self, app_name: str, spinnaker_url: str, values: str, args: dict) -> None:
-        webhook_name = f"app.{app_name}.{self.name}"
-        url = f"{spinnaker_url}/webhooks/webhook/{webhook_name}"
+        url = f"{spinnaker_url}/pipelines/{app_name}/{self.name}"
         values_b64 = base64.b64encode(values.encode()).decode()
         payload = {
             "artifacts": [
@@ -27,7 +26,7 @@ class Pipeline:
             ],
             "parameters": args,
         }
-        click.echo(f"Triggering Spinnaker webhook {webhook_name}...", nl=False)
+        click.echo(f"Triggering Spinnaker pipeline {app_name}/{self.name}...", nl=False)
         try:
             response = requests.post(url, json=payload, timeout=SPINNAKER_HTTP_TIMEOUT)
             click.echo(str(response.status_code))
