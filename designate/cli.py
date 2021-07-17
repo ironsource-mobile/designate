@@ -17,7 +17,9 @@ def cli():
 @click.command()
 @click.option("--registry-repo", type=str, required=True, envvar="REGISTRY_REPO")
 @click.option("--registry-branch", type=str, required=True, envvar="REGISTRY_BRANCH")
-@click.option("--github-token", type=str, required=True, envvar="GITHUB_TOKEN")
+@click.option("--github-token", type=str, envvar="GITHUB_TOKEN")
+@click.option("--github-app-id", type=int, envvar="GITHUB_APP_ID")
+@click.option("--github-app-private-key", type=str, envvar="GITHUB_APP_PRIVATE_KEY")
 @click.option("--chart", type=str, required=True)
 @click.option("--pipeline", type=str, required=True)
 @click.option("--environment", type=str, required=True)
@@ -29,15 +31,22 @@ def deploy(
     environment: str,
     pipeline: str,
     chart: str,
-    github_token: str,
     registry_repo: str,
     registry_branch: str,
+    github_token: str = None,
+    github_app_id: int = None,
+    github_app_private_key: str = None,
 ):
     click.echo(
         f"Designating deployment of {name} ({version}) on {environment} environment"
     )
     click.echo(f"Using {chart} chart, deployment method is {pipeline}")
-    registry = designate.registry.Registry(github_token, registry_repo, registry_branch)
+    if github_token:
+        token = github_token
+    else:
+        click.echo("Detected GitHub app credentials, generating temporary token...")
+        token = designate.registry.GithubApp(github_app_id, github_app_private_key, registry_repo).token  # type: ignore
+    registry = designate.registry.Registry(token, registry_repo, registry_branch)
     for app in registry.apps:
         if app.name != name:
             continue
