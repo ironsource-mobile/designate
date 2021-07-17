@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "designate"
-version = "0.1.2"
+version = "0.2.0"
 description = "Retrieve service metadata from Service Registry, render Helm values and trigger Spinnaker pipeline"
 authors = ["Dmitry Kovalenko <dmytro.kovalenko@ironsrc.com>"]
 license = "MIT"
@@ -9,10 +9,10 @@ license = "MIT"
 python = "^3.9"
 click = "^8.0.1"
 attrs = "^21.2.0"
-requests = "^2.25.1"
+requests = "^2.26.0"
 Jinja2 = "^3.0.1"
 deserialize = "^1.8.1"
-PyGithub = "^1.55"
+PyGithub = {version = "^1.55", extras = ["integrations"]}
 PyYAML = "^5.4.1"
 python-dotenv = "^0.18.0"
 
