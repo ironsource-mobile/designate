@@ -35,7 +35,7 @@ This will fetch service metadata from the [service registry](https://github.com/
 
 - **name** — service name
 - **environment** — deployment environment (i.e. dev, staging, prod)
-- **pipeline** — kind of deployment pipeline, default is `rollout`
+- **pipeline** — pipeline name, default is `rollout`
 - **chart** — name of app's Helm chart, omit to use the base chart
 - **registry_repo** *(optional)* — name of Service Registry repo, default: `ironsource-mobile/service-registry`
 - **registry_branch** *(optional)* — which branch to fetch from Service Registry repo, default is `main`
@@ -126,7 +126,7 @@ Available Jinja variables:
 
 ### Spinnaker webhook
 
-Designate triggers Spinnaker pipeline via a webhook, and passes rendered values as well as deployment parameters to Spinnaker as its payload:
+Designate triggers Spinnaker pipeline, and passes rendered values as well as deployment parameters to Spinnaker as its payload:
 
 ```json
 {
@@ -147,10 +147,6 @@ Designate triggers Spinnaker pipeline via a webhook, and passes rendered values 
 ```
 
 You can access Helm values as `registry-values` artifact of type *embedded/base64*, and all deployment parameters as Spinnaker parameters (e.g. `${ parameters.version }`).
-
-Please note that in order for Designate to be able to trigger Spinnaker properly, a webhook should be configured, with the name following this convention:
-
-`app.APP_NAME.PIPELINE_NAME`, for example: `app.foo-app.rollout`
 
 ## Development
 
